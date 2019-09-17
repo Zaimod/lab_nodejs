@@ -4,30 +4,22 @@ var path = require('path')
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var methodOverride = require('method-override');
-
 var log = require('./libs/log')(module);
 var config = require('./libs/config');
 var ArticleModel = require('./libs/mongoose').ArticleModel; 
-
 var app = express(); 
-
-
 
 app.use( favicon(path.join(__dirname, 'public', 'favicon.ico')) );
 app.use(morgan('tiny'));
-
 
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 app.use(methodOverride()); // поддержка put и delete 
-
-
 app.use(express.static(path.join(__dirname, "public"))); 
 
 app.get('/api/articles', function(req, res) {
-	//console.log(req.body);
 	return ArticleModel.find(function (err, articles) {
 		if (!err) {
 			return res.send(articles);

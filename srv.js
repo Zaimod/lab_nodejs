@@ -1,6 +1,6 @@
 var express = require('express');
 var favicon = require('serve-favicon');
-var path = require('path')
+var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var methodOverride = require('method-override');
@@ -9,14 +9,14 @@ var config = require('./libs/config');
 var ArticleModel = require('./libs/mongoose').ArticleModel; 
 var app = express(); 
 
-app.use( favicon(path.join(__dirname, 'public', 'favicon.ico')) );
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('tiny'));
 
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
+app.use(bodyParser.json());    
+app.use(bodyParser.urlencoded({    
+	extended: true
 })); 
-app.use(methodOverride()); // поддержка put и delete 
+app.use(methodOverride());
 app.use(express.static(path.join(__dirname, "public"))); 
 
 app.get('/api/articles', function(req, res) {
@@ -61,7 +61,7 @@ app.post('/api/articles', function(req, res) {
 
 app.get('/api/articles/:id', function(req, res) {
 	return ArticleModel.findById(req.params.id, function (err, article) {
-		if(!article) {
+		if (!article) {
 			res.statusCode = 404;
 			return res.send({ error: 'Not found' });
 		}
@@ -77,7 +77,7 @@ app.get('/api/articles/:id', function(req, res) {
 
 app.put('/api/articles/:id', function (req, res){
 	return ArticleModel.findById(req.params.id, function (err, article) {
-		if(!article) {
+		if (!article) {
 			res.statusCode = 404;
 			return res.send({ error: 'Not found' });
 		}
@@ -90,7 +90,7 @@ app.put('/api/articles/:id', function (req, res){
 				log.info("article updated");
 				return res.send({ status: 'OK', article:article });
 			} else { 
-				if(err.name == 'ValidationError') {
+				if (err.name == 'ValidationError') {
 					res.statusCode = 400;
 					res.send({ error: 'Validation error' });
 				} else {
@@ -105,7 +105,7 @@ app.put('/api/articles/:id', function (req, res){
 
 app.delete('/api/articles/:id', function (req, res){
 	return ArticleModel.findById(req.params.id, function (err, article) {
-		if(!article) {
+		if (!article) {
 			res.statusCode = 404;
 			return res.send({ error: 'Not found' });
 		}
